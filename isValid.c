@@ -40,18 +40,21 @@ bool isValid(char * s)
         }
         else
         {
-            //右符号和栈顶括号成堆，出栈
-            if (true == isCupple(stack + top, s + i))
+            //右符号和栈顶括号成对，出栈
+            if (0 <= top && true == isCupple(stack + top, s + i))
             {
                 top--;
             }
             else 
             {
+                //栈已空，遇到右符号，返回false；不成对，返回false
+                free(stack);
                 return false;
             }
         }
     }
-
+    
+    free (stack);
     //字符串已比较完，栈为空，说明有效
     if (top == -1)
         return true;
