@@ -1,48 +1,60 @@
-static bool isCupple(char *a, char *b)
+static bool isCupple(char *top, char *c)
 {
-    if ((*a == '(') && (*b == ')'))
+    switch (*top)
     {
-        return 0;        
-    }   
-    else if ((*a == '[') && (*b == ']'))
-    {
-        return 0;
+        case '(':
+            if (')' == *c) return true;
+            break;
+        case '[':
+            if (']' == *c) return true;
+            break;
+        case '{':
+            if ('}' == *c) return true;
+            break;
     }
-    else if ((*a == '{') && (*b == '}'))
-    {
-        return 0;        
-    }
-    else
-    {
-        return -1;
-    }
+    return false;
 }
 
 
-bool isValid(char * s){
-    char stack[10^4/2+1] = {0};
-    char *stackTop = stack - 1;
-    char *p = s;
-    while (!p)
+bool isValid(char * s)
+{
+    int i = 0;
+    int top = -1;
+    int strLen = -1;
+    char *stack = NULL;
+
+    strLen = strlen(s);
+    stack = malloc(strLen);
+    if (!stack)
     {
-        if ( *p == '(' || *p == '[' || *p == '{')
+        printf("malloc failed\n");
+        return false;
+    }
+
+    for (i = 0; i < strLen; i++)
+    {
+        if (s[i] == '(' || s[i] == '[' || s[i] == '{')
         {
-            stackTop++;
-            *stackTop = *p;
+            //左符号，入栈
+            stack[++top] = s[i];
         }
         else
         {
-            if (true == isCupple(stackTop, p))
+            //右符号和栈顶括号成堆，出栈
+            if (true == isCupple(stack + top, s + i))
             {
-                stackTop--;
-                if (stackTop == stack - 1)
-                {
-                    return 0;
-                }
+                top--;
             }
-            return -1;
+            else 
+            {
+                return false;
+            }
         }
-        p++;
     }
-    return 0;
+
+    //字符串已比较完，栈为空，说明有效
+    if (top == -1)
+        return true;
+    else
+        return false;
 }
