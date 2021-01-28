@@ -54,12 +54,14 @@ int cQueueDeleteHead(CQueue* obj) {
         {
             obj->QTailStack[++i] = obj->QHeadStack[obj->qHead--];
         }
+        obj->qHead--;
+        return obj->QTailStack[0];
     }
     else
     {
-        obj->qTail--;
+        i = obj->qTail--;
+        return obj->QTailStack[i];
     }
-    return 0;
 }
 
 void cQueueFree(CQueue* obj) {
