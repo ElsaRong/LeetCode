@@ -19,7 +19,6 @@ CQueue* cQueueCreate() {
 }
 
 void cQueueAppendTail(CQueue* obj, int value) {
-    int i = -1;
     //空队列，直接入栈
     if (obj->qHead == -1 && obj->qTail == -1)
     {
@@ -27,12 +26,12 @@ void cQueueAppendTail(CQueue* obj, int value) {
     } 
     else if (obj->qHead == -1 && obj->qTail >= 0)
     {
-        //上一次执行了队列头部元素删除，先重建再插入
+        //上一次执行了队首元素删除，先重建再插入
         while (obj->qTail >= 0)
         {
-            obj->QHeadStack[++i] = obj->QTailStack[obj->qTail--];
+            obj->QHeadStack[++obj->qHead] = obj->QTailStack[obj->qTail--];
         }
-        obj->QHeadStack[++i] = value;
+        obj->QHeadStack[++obj->qHead] = value;
     }
     else
     {
