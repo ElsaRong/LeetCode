@@ -46,6 +46,7 @@ int deQueue(Queue *q) {
         //队列中仅一个元素，出队后置空
         q->front = -1;
         q->rear = -1;
+        return value;
     }
     //出队后队首指针++
     q->front = (q->front + 1) % q->size;
