@@ -7,59 +7,56 @@ void swap(int *x, int *y)
     *x = *y;
     *y = tmp;
 }
-void heapSort(int *arr, int p, int arrSize)
-{
-    int l, r = 0;
 
+//p代表开始调整的父节点，调整方式是依次比较父子，步长是2p+1
+void buildHeap(int *arr, int parent, int arrSize)
+{
+    int leftchild, rightchild = 0;
+    int tmp = arr[parent]; //取出父节点值
     //从p的左儿子开始，依次向下遍历左儿子
-    for (l = 2*p + 1; l < arrSize; l = 2*l + 1)
+    for (leftchild = 2*parent + 1; leftchild < arrSize; leftchild = 2*leftchild + 1)
     {
-        if (l >= arrSize)
+        //p的左儿子超出数组范围，返回
+        if (leftchild >= arrSize) break;
+        //选出p的儿子节点中最大值，和p比较
+        rightchild = leftchild + 1; 
+        if ((rightchild < arrSize) && (arr[rightchild] > arr[leftchild]))
         {
-            break; //左儿子超出数组范围，返回
+            leftchild = rightchild;
         }
-        
-        //选出子节点中最小值，和父节点比较
-        r = l + 1; 
-        if ((r < arrSize) && (arr[r] < arr[l]))
+        //交换p节点和子节点最大值，如果p的俩儿子都小于它，跳出本次循环；否则交换
+        if (arr[leftchild] > arr[parent])
         {
-            l = r;
-        }
-        //交换父节点和子节点最小值，如果已成堆，返回
-        if (arr[l] < arr[p])
-        {
-            swap(&arr[l], &arr[p]);
-            p = l;
+            swap(&arr[parent], &arr[leftchild]);
+            parent = leftchild;
         }
         else
         {
             break;
         }
-
     }
 }
 
+/* 堆排序思想：如果是无序序列输出升序序列，先构建大顶堆，此时整个序列的最大值在堆顶。
+ * 将堆顶和堆末尾元素交换，则数组末尾为最大值，再将剩余n-1个元素重新构造大顶堆，
+ * 获得倒数第二大值，依次循环 
+*/
 int* getLeastNumbers(int* arr, int arrSize, int k, int* returnSize){
     int i = 0;
-    int *output = NULL;
-    //初始化最小堆（从最后一个非叶子节点开始总右至左、从下至上调整，满足父节点<子节点）
+
+    //初始化大顶堆，从最后一个非叶子节点开始，调整父子（i代表非叶子节点递减的调整顺序）
     for (i = arrSize/2 - 1; i >= 0; i--)
     {
-        heapSort(arr, i, arrSize);
+        buildHeap(arr, i, arrSize);
     }
 
-    //生成有序队列（从最后一个叶子节点开始，和堆顶元素交换后，重新调整堆）
+    //构建升序序列，从最后一个元素开始交换，交换完毕初始化大顶堆（0代表从堆顶开始的调整顺序）
     for (i = arrSize - 1; i > 0; i--)
     {
         swap(&arr[0], &arr[i]);
-        heapSort(arr, 0, i);
+        buildHeap(arr, 0, i);
     }
-    output = (int *)malloc(sizeof(int) * (k + 1));
-    memset(output, 0, k+1);
-    for (i = 0; i < k; i++)
-    {
-        output[i] = arr[i];
-    }
+
     *returnSize = k;
-    return output;
+    return arr;
 }
