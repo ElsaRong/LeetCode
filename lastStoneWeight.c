@@ -62,6 +62,7 @@ int lastStoneWeight(int* stones, int stonesSize){
         if (stones[i] == stones[i-1]) 
         {
             stonesSize-=2;
+            i--;
             if (stonesSize == 1) break;
             else continue;
         }
