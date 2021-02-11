@@ -62,18 +62,24 @@ int lastStoneWeight(int* stones, int stonesSize){
         if (stones[i] == stones[i-1]) 
         {
             stonesSize-=2;
-            break;
+            if (stonesSize == 1) break;
+            else continue;
         }
         //不等，倒数第二个元素重新赋值，stones序列重新堆排序
         if (stones[i] != stones[i-1])
         {
             stones[i-1] = abs(stones[i] - stones[i-1]);
             stonesSize-=1;
-            heapSort(stones, stonesSize);
+            if (stonesSize == 1) break; 
+            else heapSort(stones, stonesSize);
         }
     }
     if (stonesSize == 1)
+    {
         return stones[0];
+    }
     else
+    {
         return 0;
+    }
 }
