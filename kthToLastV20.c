@@ -12,6 +12,7 @@ int kthToLast(struct ListNode* head, int k){
     {
         kthToHeadNode = kthToHeadNode->next;
     }
+    //快指针比慢指针领先k步
     while (kthToHeadNode) 
     {
         kthToLastNode = kthToLastNode->next;
