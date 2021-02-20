@@ -1,7 +1,7 @@
 class Solution {
 public:
     int romanToInt(string s) {
-        std::map<char, int> romanTable;
+        std::map<char, int> romanTable;            //注意：map和unordered_map比较差异
         romanTable.insert(make_pair('I', 1));
         romanTable.insert(make_pair('V', 5));
         romanTable.insert(make_pair('X', 10));
